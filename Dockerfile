@@ -7,12 +7,11 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# 가상환경 생성 및 활성화 후 의존성 설치
+# 가상환경 생성 및 의존성 설치
 ENV VIRTUAL_ENV=/opt/venv
 RUN python -m venv $VIRTUAL_ENV && \
-    . $VIRTUAL_ENV/bin/activate && \
-    pip install --upgrade pip && \
-    pip install -r requirements.txt
+    $VIRTUAL_ENV/bin/pip install --upgrade pip && \
+    $VIRTUAL_ENV/bin/pip install -r requirements.txt
 
 # 환경 변수 설정
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
