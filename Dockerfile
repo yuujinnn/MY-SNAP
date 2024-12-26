@@ -16,7 +16,7 @@ RUN python -m venv $VIRTUAL_ENV
 RUN $VIRTUAL_ENV/bin/pip install --upgrade pip
 
 # MYSNAP/requirements.txt 경로를 사용하여 requirements.txt 복사
-COPY MYSNAP/requirements.txt /app/
+COPY MY-SNAP/requirements.txt /app/
 RUN $VIRTUAL_ENV/bin/pip install -r /app/requirements.txt
 
 # 환경 변수 설정
