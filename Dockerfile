@@ -8,22 +8,21 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
-# 애플리케이션 코드 복사
-COPY . /app
-WORKDIR /app
-
-# 가상환경 생성
+# 가상환경 생성 및 활성화 후 의존성 설치
 ENV VIRTUAL_ENV=/opt/venv
-RUN python -m venv $VIRTUAL_ENV
-
-# pip 업그레이드
-RUN $VIRTUAL_ENV/bin/pip install --upgrade pip
+RUN python -m venv $VIRTUAL_ENV && \
+    $VIRTUAL_ENV/bin/pip install --upgrade pip
 
 # requirements.txt 설치
-RUN $VIRTUAL_ENV/bin/pip install -r requirements.txt
+COPY requirements.txt /app/
+RUN $VIRTUAL_ENV/bin/pip install -r /app/requirements.txt
 
 # 환경 변수 설정
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# 애플리케이션 코드 복사
+COPY . /app
+WORKDIR /app
 
 # 컨테이너 시작 명령어
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
