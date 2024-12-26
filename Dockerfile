@@ -8,16 +8,16 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
-# 가상환경 생성 및 의존성 설치
+# 애플리케이션 코드 복사
+COPY . /app
+WORKDIR /app
+
+# 가상환경 생성
 ENV VIRTUAL_ENV=/opt/venv
 RUN python -m venv $VIRTUAL_ENV
 
 # pip 업그레이드
 RUN $VIRTUAL_ENV/bin/pip install --upgrade pip
-
-# 애플리케이션 코드 복사
-COPY . /app
-WORKDIR /app
 
 # requirements.txt 설치
 RUN $VIRTUAL_ENV/bin/pip install -r requirements.txt
