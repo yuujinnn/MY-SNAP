@@ -1,17 +1,18 @@
 # Python 이미지를 기반으로 사용 (예: Python 3.10)
 FROM python:3.10-slim
 
-# 필수 패키지 설치
+# 필수 패키지 설치 (python3-venv 추가)
 RUN apt-get update && apt-get install -y \
     build-essential \
     python3-dev \
+    python3-venv \  # 가상 환경을 만들기 위한 패키지
     && rm -rf /var/lib/apt/lists/*
 
 # 가상환경 생성 및 의존성 설치
 ENV VIRTUAL_ENV=/opt/venv
-RUN python -m venv $VIRTUAL_ENV && \
-    $VIRTUAL_ENV/bin/pip install --upgrade pip && \
-    $VIRTUAL_ENV/bin/pip install -r requirements.txt
+RUN python -m venv $VIRTUAL_ENV
+RUN $VIRTUAL_ENV/bin/pip install --upgrade pip
+RUN $VIRTUAL_ENV/bin/pip install -r requirements.txt
 
 # 환경 변수 설정
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
