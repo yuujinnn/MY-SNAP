@@ -8,13 +8,15 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
-# 가상환경 생성 및 활성화 후 의존성 설치
+# 가상환경 생성
 ENV VIRTUAL_ENV=/opt/venv
-RUN python -m venv $VIRTUAL_ENV && \
-    $VIRTUAL_ENV/bin/pip install --upgrade pip
+RUN python -m venv $VIRTUAL_ENV
 
-# requirements.txt 설치
-COPY requirements.txt /app/
+# 가상환경을 사용하여 pip 업그레이드 및 requirements.txt 설치
+RUN $VIRTUAL_ENV/bin/pip install --upgrade pip
+
+# MYSNAP/requirements.txt 경로를 사용하여 requirements.txt 복사
+COPY MYSNAP/requirements.txt /app/
 RUN $VIRTUAL_ENV/bin/pip install -r /app/requirements.txt
 
 # 환경 변수 설정
